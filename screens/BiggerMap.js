@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Animated, Easing } from "react-native";
 import MapView, { Overlay, PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import Geolocation from '@react-native-community/geolocation';
+import BackgroundGeolocation from "react-native-background-geolocation";
 import { windowHeight, windowWidth } from "../utils/Dimentions";
 const BiggerMap = () => {
   const [coord, setCoord] = useState();
@@ -21,6 +22,34 @@ const BiggerMap = () => {
     radius: 11000,
     identifier: 1,
   };
+  useEffect(()=>{
+    BackgroundGeolocation.addGeofence({
+      identifier: "Home",
+      radius: 200,
+      latitude: 41.014970,
+      longitude: 28.976984,
+      notifyOnEntry: true,
+      notifyOnExit: true,
+      extras: {
+        route_id: 1234
+      }
+    }).then((success) => {
+      console.log("[addGeofence] success");
+      alert("geofence started")
+    }).catch((error) => {
+      console.log("[addGeofence] FAILURE: ", error);
+    });
+    BackgroundGeolocation.ready({
+      desiredAccuracy: BackgroundGeolocation.DESIRED_ACCURACY_HIGH,
+      distanceFilter: 10,
+      autoSync: true
+    }, state => {
+      BackgroundGeolocation.startGeofences();
+    })
+    BackgroundGeolocation.onGeofence(geofence => {
+      alert("Youre on a geofence", geofence)
+    })
+  }, [])
   
   const [growValue] = useState(new Animated.Value(0));
   const grow = growValue.interpolate({
