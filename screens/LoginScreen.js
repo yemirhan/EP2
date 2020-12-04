@@ -27,7 +27,7 @@ const LoginScreen = ({ navigation }) => {
       <FormButton
         buttonTitle="Sign In"
         // onPress={()=> {}}
-        onPress={() => navigation.replace("MainScreen")}
+        onPress={() => navigation.replace("BiggerMap")}
       />
       <TouchableOpacity style={styles.forgotButton}>
         <Text style={styles.navButtonText}>Forgot Password</Text>

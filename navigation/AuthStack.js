@@ -54,6 +54,9 @@ const AuthStack = () => {
           },
         })}
       />
+      <Stack.Screen name="BiggerMap"
+        component={BiggerMap}
+        options={{ header: () => null }} />
     </Stack.Navigator>
   );
 };
