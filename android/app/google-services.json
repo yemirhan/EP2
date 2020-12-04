@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "476071380609",
+    "project_id": "berkanproje",
+    "storage_bucket": "berkanproje.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:476071380609:android:7f2c7510fa5538a7426f80",
+        "android_client_info": {
+          "package_name": "com.ep2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "476071380609-hg8gc7jos561j2arr2p5l3pj4o4h7rbn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDowSnrS0Fwqp1RK-qtAGlJBegKknBQd1M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "476071380609-hg8gc7jos561j2arr2p5l3pj4o4h7rbn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
