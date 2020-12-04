@@ -40,22 +40,52 @@ const BiggerMap = () => {
       console.log("[addGeofence] FAILURE: ", error);
     });
     BackgroundGeolocation.ready({
+      // Geolocation Config
       desiredAccuracy: BackgroundGeolocation.DESIRED_ACCURACY_HIGH,
       distanceFilter: 10,
-      autoSync: true
-    }, state => {
-      BackgroundGeolocation.startGeofences();
-    })
+      // Activity Recognition
+      stopTimeout: 1,
+      // Application config
+      debug: true, // <-- enable this hear sounds for background-geolocation life-cycle.
+      logLevel: BackgroundGeolocation.LOG_LEVEL_VERBOSE,
+      stopOnTerminate: false,   // <-- Allow the background-service to continue tracking when user closes the app.
+      startOnBoot: true,        // <-- Auto start tracking when device is powered-up.
+      // HTTP / SQLite config
+      url: 'https://berkanapp.herokuapp.com/locations',
+      batchSync: false,       // <-- [Default: false] Set true to sync locations to server in a single HTTP request.
+      autoSync: true,         // <-- [Default: true] Set true to sync each location to server as it arrives.
+      
+    }, (state) => {
+      console.log("- BackgroundGeolocation is configured and ready: ", state.enabled);
+
+      if (!state.enabled) {
+        ////
+        // 3. Start tracking!
+        //
+        BackgroundGeolocation.start(function() {
+          console.log("- Start success");
+        });
+      }
+    });
     BackgroundGeolocation.onGeofence(geofence => {
       alert("Youre on a geofence", geofence)
     })
   }, [])
+
+  useEffect(()=> {
+    if(coord != undefined ){
+      if(distance(JSON.stringify(coord.latitude), JSON.stringify(coord.longitude), 41.014945, 28.977038) < 200){
+        alert("test")
+      }
+    }
+  }, [coord])
   
   const [growValue] = useState(new Animated.Value(0));
   const grow = growValue.interpolate({
     inputRange: [0, 1],
     outputRange: ['0', '10'],
   });
+  
   useEffect(() => {
     Animated.loop(
       Animated.timing(growValue, {
@@ -195,4 +225,25 @@ const TSM ={
     latitudeDelta: 0.01,
     longitudeDelta: 0.01, //iam
  
+  }
+  function distance(lat1, lon1, lat2, lon2) {
+    if ((lat1 == lat2) && (lon1 == lon2)) {
+      return 0;
+    }
+    else {
+      var radlat1 = Math.PI * lat1/180;
+      var radlat2 = Math.PI * lat2/180;
+      var theta = lon1-lon2;
+      var radtheta = Math.PI * theta/180;
+      var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+      if (dist > 1) {
+        dist = 1;
+      }
+      dist = Math.acos(dist);
+      dist = dist * 180/Math.PI;
+      dist = dist * 60 * 1.1515;
+      dist = dist * 1.609344 
+  
+      return dist;
+    }
   }
